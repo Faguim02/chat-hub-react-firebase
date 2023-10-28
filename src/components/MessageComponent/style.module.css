@@ -1,0 +1,39 @@
+.message{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 5px;
+}
+
+.myMessage{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+    gap: 5px;
+}
+
+.message img{
+    width: 40px;
+    border-radius: 100%;
+}
+
+.messageContext{
+    background-color: #474973;
+    padding: 5px 10px;
+    color: white;
+    border-radius: 7px;
+    max-width: 400px;
+}
+
+.message span{
+    font-weight: bold;
+    color: #F8333C;
+}
+
+@media screen and (max-width: 500px){
+    .messageContext{
+        max-width: 300px;
+    }
+}
