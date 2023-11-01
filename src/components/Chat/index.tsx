@@ -1,12 +1,15 @@
-import { Input, InputGroup, InputRightElement } from '@chakra-ui/react'
+import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Input, InputGroup, InputRightElement, useDisclosure } from '@chakra-ui/react'
+import logo from '../../assets/logo.svg'
 import {BsFillSendFill} from 'react-icons/bs'
+import { AiOutlineMenu, AiFillInstagram, AiFillGithub } from 'react-icons/ai'
 import style from './style.module.css'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { GetAuthGoogle } from '../../services/Auth/GetAuthGoogle'
 import { SendMessage } from '../../services/DataBase/SendMessage'
 import { collection, onSnapshot, query } from 'firebase/firestore'
 import { db } from '../../services/firebaseConfig'
 import MessageConponent from '../MessageComponent'
+import { SignOut } from '../../services/Auth/SignOutGoogle'
 
 interface messagesType{
     id: number,
@@ -22,6 +25,9 @@ export default function Chat(){
     const [message, setMessage] = useState<string>('')
     const [messages, setMessages] = useState<messagesType[]>([])
     
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const btnRef: any = React.useRef()
+
     useEffect(()=>{
         const q = query(
             collection(db, 'messages'),
@@ -77,6 +83,53 @@ export default function Chat(){
 
     return(
         <main className={style.container}>
+            <header className={style.nav}>
+                <div>
+                    <img src={logo} alt="logo" />
+                    <h1>ChatHub</h1>
+                </div>
+
+                <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
+                    <AiOutlineMenu/>
+                </Button>
+
+                <Drawer
+                 isOpen={isOpen}
+                 placement='right'
+                 onClose={onClose}
+                 finalFocusRef={btnRef}
+                >
+                    <DrawerOverlay/>
+                    <DrawerContent backgroundColor={'#161B33'}>
+                        <DrawerCloseButton color={'white'}/>
+                        <DrawerHeader>Informações</DrawerHeader>
+
+                        <DrawerBody>
+                            <div className={style.drawerBody}>
+                                {user && (
+                                    <>
+                                        <img src={user.photoURL} alt="avatar" />
+                                        <h2>{user.displayName}</h2>
+                                    </>
+                                )}
+                                <Button onClick={SignOut}>Sair</Button>
+                            </div>
+                        </DrawerBody>
+
+                        <DrawerFooter>
+                            <footer className={style.DrawerFooter}>
+                                <div>
+                                    <a href="https://www.instagram.com/faguim_02/" target="_blank" rel="noopener noreferrer"><AiFillInstagram size={35}/></a>
+                                    <a href="https://github.com/Faguim02" target="_blank" rel="noopener noreferrer"><AiFillGithub size={35}/></a>
+                                </div>
+                                <span>© Fagner</span>
+                            </footer>
+                        </DrawerFooter>
+                    </DrawerContent>
+
+                </Drawer>
+
+            </header>
             <article className={style.messagesArticle}>
                 <ul>
                    {messages.map((item, index) => {
@@ -90,9 +143,10 @@ export default function Chat(){
                 </ul>
             </article>
             <form className={style.formChat}>
-                <InputGroup size={'md'}className={style.inputSend}>
+                <InputGroup size={'md'} className={style.inputSend}>
                     <Input
                      type={'text'}
+                     pr={'3.5rem'}
                      placeholder='Digite uma mensagem'
                      onChange={(e)=>setMessage(e.target.value)}
                      value={message}

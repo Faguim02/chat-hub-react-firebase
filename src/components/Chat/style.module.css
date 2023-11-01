@@ -9,6 +9,22 @@
     justify-content: space-between;
 }
 
+.nav{
+   display: none; 
+}
+
+.nav div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav div img{
+    border-radius: 100%;
+    width: 55px;
+}
+
 .formChat{
     padding: 1rem;
     width: 100%;
@@ -47,4 +63,66 @@
 .messagesArticle ul::-webkit-scrollbar-thumb{
     border-radius: 100px;
     background-color: #f8333d63;
+}
+
+.drawerBody{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.drawerBody img{
+    border-radius: 100%;
+    width: 100px;
+}
+
+.drawerBody h2{
+    font-size: 18pt;
+    font-weight: bold;
+    color: white;
+}
+
+.drawerBody button{
+    background-color: #F8333C;
+    color: white;
+}
+
+.DrawerFooter{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 1rem;
+}
+
+.DrawerFooter div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+    .nav{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 1rem;
+        font-size: 18pt;
+        font-weight: bold;
+        color: white;
+        background-color: #161B33;
+    }
+    .messagesArticle ul {
+        
+        max-height: 70vh;
+        
+    }
 }
