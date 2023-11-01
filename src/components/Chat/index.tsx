@@ -1,32 +1,77 @@
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import {BsFillSendFill} from 'react-icons/bs'
 import style from './style.module.css'
+import { useEffect, useState } from 'react'
+import { GetAuthGoogle } from '../../services/Auth/GetAuthGoogle'
+import { SendMessage } from '../../services/DataBase/SendMessage'
+import { collection, onSnapshot, query } from 'firebase/firestore'
+import { db } from '../../services/firebaseConfig'
 import MessageConponent from '../MessageComponent'
-import { useState } from 'react'
 
 interface messagesType{
-    myMessage: boolean,
+    id: number,
+    displayName: string,
+    photoURL: string,
+    uid: string,
     message: string
 }
 
 export default function Chat(){
 
+    const [user, setUser] = useState<any>()
     const [message, setMessage] = useState<string>('')
     const [messages, setMessages] = useState<messagesType[]>([])
-    const [yourMessage, setYourMessage] = useState<boolean>(true)
+    
+    useEffect(()=>{
+        const q = query(
+            collection(db, 'messages'),
+            
+        )
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const messages: any[] = []
+            querySnapshot.forEach((doc) => {
+                messages.push({ ...doc.data()})
+            })
+
+            let messagesOrd = messages.sort((a, b) => a.id - b.id)
+
+            setMessages(messagesOrd)
+            console.log(messagesOrd)
+        })
+
+        return () => unsubscribe()
+    },[])
+
+    useEffect(()=>{
+        (async() => {
+            const user: any = await GetAuthGoogle()
+
+            if(user == null){
+                window.location.pathname = '/signIn'
+            }else{
+                setUser(user)
+            }
+        })()
+
+    },[])
 
     function addMessage(e: any){
         e.preventDefault()
 
         if(message.length != 0){
-            const data: messagesType = {
-                myMessage: yourMessage,
+            
+            const body: messagesType = {
+                id: new Date().getTime(),
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                uid: user.uid,
                 message: message
             }
-            setMessages([...messages, data])
-            setMessage('')
 
-            setYourMessage(!yourMessage)
+            SendMessage(body)
+
+            setMessage('')
         }
     }
 
@@ -34,7 +79,14 @@ export default function Chat(){
         <main className={style.container}>
             <article className={style.messagesArticle}>
                 <ul>
-                    {messages.map((item, index) => <MessageConponent myMessage={item.myMessage} key={index} message={item.message}/>)}
+                   {messages.map((item, index) => {
+                    
+                    let verifyMessage: boolean = item.uid == user.uid ? true : false
+
+                    return(
+                        <MessageConponent myMessage={verifyMessage} displayName={item.displayName} message={item.message} photoURL={item.photoURL} key={index}/>
+                    )
+                   })}
                 </ul>
             </article>
             <form className={style.formChat}>
