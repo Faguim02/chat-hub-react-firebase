@@ -83,81 +83,87 @@ export default function Chat(){
 
     return(
         <main className={style.container}>
-            <header className={style.nav}>
-                <div>
-                    <img src={logo} alt="logo" />
-                    <h1>ChatHub</h1>
-                </div>
+            <div className={style.chat}>
+                <header className={style.nav}>
+                    <div>
+                        <img src={logo} alt="logo" />
+                        <h1>ChatHub</h1>
+                    </div>
 
-                <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
-                    <AiOutlineMenu/>
-                </Button>
+                    <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
+                        <AiOutlineMenu/>
+                    </Button>
 
-                <Drawer
-                 isOpen={isOpen}
-                 placement='right'
-                 onClose={onClose}
-                 finalFocusRef={btnRef}
-                >
-                    <DrawerOverlay/>
-                    <DrawerContent backgroundColor={'#161B33'}>
-                        <DrawerCloseButton color={'white'}/>
-                        <DrawerHeader>Informações</DrawerHeader>
+                    <Drawer
+                    isOpen={isOpen}
+                    placement='right'
+                    onClose={onClose}
+                    finalFocusRef={btnRef}
+                    >
+                        <DrawerOverlay/>
+                        <DrawerContent backgroundColor={'#161B33'}>
+                            <DrawerCloseButton color={'white'}/>
+                            <DrawerHeader>Informações</DrawerHeader>
 
-                        <DrawerBody>
-                            <div className={style.drawerBody}>
-                                {user && (
-                                    <>
-                                        <img src={user.photoURL} alt="avatar" />
-                                        <h2>{user.displayName}</h2>
-                                    </>
-                                )}
-                                <Button onClick={SignOut}>Sair</Button>
-                            </div>
-                        </DrawerBody>
-
-                        <DrawerFooter>
-                            <footer className={style.DrawerFooter}>
-                                <div>
-                                    <a href="https://www.instagram.com/faguim_02/" target="_blank" rel="noopener noreferrer"><AiFillInstagram size={35}/></a>
-                                    <a href="https://github.com/Faguim02" target="_blank" rel="noopener noreferrer"><AiFillGithub size={35}/></a>
+                            <DrawerBody>
+                                <div className={style.drawerBody}>
+                                    {user && (
+                                        <>
+                                            <img src={user.photoURL} alt="avatar" />
+                                            <h2>{user.displayName}</h2>
+                                        </>
+                                    )}
+                                    <Button onClick={SignOut}>Sair</Button>
                                 </div>
-                                <span>© Fagner</span>
-                            </footer>
-                        </DrawerFooter>
-                    </DrawerContent>
+                            </DrawerBody>
 
-                </Drawer>
+                            <DrawerFooter>
+                                <footer className={style.DrawerFooter}>
+                                    <div>
+                                        <a href="https://www.instagram.com/faguim_02/" target="_blank" rel="noopener noreferrer"><AiFillInstagram size={35}/></a>
+                                        <a href="https://github.com/Faguim02" target="_blank" rel="noopener noreferrer"><AiFillGithub size={35}/></a>
+                                    </div>
+                                    <span>© Fagner</span>
+                                </footer>
+                            </DrawerFooter>
+                        </DrawerContent>
 
-            </header>
-            <article className={style.messagesArticle}>
-                <ul>
-                   {messages.map((item, index) => {
-                    
-                    let verifyMessage: boolean = item.uid == user.uid ? true : false
+                    </Drawer>
 
-                    return(
-                        <MessageConponent myMessage={verifyMessage} displayName={item.displayName} message={item.message} photoURL={item.photoURL} key={index}/>
-                    )
-                   })}
-                </ul>
-            </article>
-            <form className={style.formChat}>
-                <InputGroup size={'md'} className={style.inputSend}>
-                    <Input
-                     type={'text'}
-                     pr={'3.5rem'}
-                     placeholder='Digite uma mensagem'
-                     onChange={(e)=>setMessage(e.target.value)}
-                     value={message}
-                    />
-                    <InputRightElement width='4.5rem'>
-                        <button onClick={addMessage}>
-                            <BsFillSendFill className={style.iconSend} size={30}/>
-                        </button>
-                    </InputRightElement>
-                </InputGroup>
-            </form>
+                </header>
+
+                <article className={style.messagesArticle}>
+                    <ul>
+                    {messages.map((item, index) => {
+                        
+                        let verifyMessage: boolean = item.uid == user.uid ? true : false
+
+                        return(
+                            <MessageConponent myMessage={verifyMessage} displayName={item.displayName} message={item.message} photoURL={item.photoURL} key={index}/>
+                        )
+                    })}
+                        <div className={style.bug}>bug</div>
+                        <div className={style.bug}>bug</div>
+                    </ul>
+                </article>
+
+                <form className={style.formChat}>
+                    <InputGroup size={'md'} className={style.inputSend}>
+                        <Input
+                        type={'text'}
+                        pr={'3.5rem'}
+                        placeholder='Digite uma mensagem'
+                        onChange={(e)=>setMessage(e.target.value)}
+                        value={message}
+                        />
+                        <InputRightElement width='4.5rem'>
+                            <button onClick={addMessage}>
+                                <BsFillSendFill className={style.iconSend} size={30}/>
+                            </button>
+                        </InputRightElement>
+                    </InputGroup>
+                </form>
+            </div>
         </main>
     )
 }
