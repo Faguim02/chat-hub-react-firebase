@@ -1,5 +1,7 @@
 # CHAT HUB
 
+<a href="https://chat-e-hub.netlify.app/">Link do projeto</a>
+
 Bem-vindo ao repositório do meu site de conversa! Este projeto é uma plataforma de conversa online onde os usuários podem trocar mensagens e interagir em tempo real.
 
 ## Funcionalidades
